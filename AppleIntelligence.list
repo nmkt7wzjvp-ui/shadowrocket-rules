@@ -1,0 +1,53 @@
+# Apple Intelligence & Siri — Shadowrocket 分流规则
+# 生成日期: 2026-11-05
+# 来源: Apple 官方企业网络文档 support.apple.com/101555（2026-10-26 抓取，2026-07-30 发布）
+#      “Apple Intelligence, Siri and Search”一节 + 社区维护规则（SukkaW Surge、blackmatrix7 等）
+#
+# 用法（Shadowrocket）:
+#   在你的配置文件 [Rule] 段添加一行:
+#     RULE-SET,<本文件链接>,PROXY
+#   并确保该行在 DOMAIN-SUFFIX,apple.com,DIRECT / GEOIP,CN,DIRECT 等宽泛直连规则之前，
+#   否则 Apple 相关请求会被前面的直连规则先匹配走，等于没分流。
+#   若你的策略组不叫 PROXY，把 PROXY 改成你的策略组名（例如：美国节点）。
+#
+# 注意:
+#   - 规则只控制网络路径，不改变 Apple Intelligence 的设备、账号与地区可用条件。
+#     新 Siri AI 仍需 iPhone 15 Pro 及更新机型、受支持的语言/地区与等候名单。
+#   - 节点请用中国大陆以外的节点；有用户反馈经节点走 UDP/QUIC 不稳定，
+#     可把节点传输改成 TCP+TLS 再试。
+#   - Apple 官方提醒：不要对这些域名做 HTTPS 拦截/解密，否则连接会被丢弃。
+
+# --- 苹果官方清单: Apple Intelligence、Siri 与搜索 (Private Cloud Compute) ---
+DOMAIN,guzzoni.apple.com,PROXY
+DOMAIN-SUFFIX,smoot.apple.com,PROXY
+DOMAIN,apple-relay.apple.com,PROXY
+DOMAIN,apple-relay.cloudflare.com,PROXY
+DOMAIN,apple-relay.fastly-edge.com,PROXY
+DOMAIN,cp4.cloudflare.com,PROXY
+
+# --- Private Cloud Compute 中继（社区维护补充，与官方清单一致）---
+DOMAIN-SUFFIX,apple-relay.akamaized.net,PROXY
+DOMAIN,apple-relay.mask.apple-dns.net,PROXY
+DOMAIN,gspe1-ssl.ls.apple.com,PROXY
+DOMAIN,humb.apple.com,PROXY
+
+# --- iCloud Private Relay / 掩码域名（Siri 请求链路相关）---
+DOMAIN,mask-api.fe.apple-dns.net,PROXY
+DOMAIN,mask-api.icloud.com,PROXY
+DOMAIN,mask-t.apple-dns.net,PROXY
+DOMAIN,mask.apple-dns.net,PROXY
+DOMAIN-SUFFIX,mask.icloud.com,PROXY
+DOMAIN-SUFFIX,mask-h2.icloud.com,PROXY
+DOMAIN-SUFFIX,apple-dns.net,PROXY
+
+# --- CloudKit 网关与 Private Cloud Compute 入口 ---
+DOMAIN-SUFFIX,gateway.icloud.com,PROXY
+DOMAIN-SUFFIX,pcc.apple.com,PROXY
+DOMAIN-SUFFIX,ls.apple.com,PROXY
+DOMAIN,iphone-ld.apple.com,PROXY
+
+# --- 关键词兜底（放最后；匹配面较宽，如不需要可删）---
+DOMAIN-KEYWORD,siri,PROXY
+DOMAIN-KEYWORD,guzzoni,PROXY
+DOMAIN-KEYWORD,gdmf,PROXY
+DOMAIN-KEYWORD,gateway,PROXY
