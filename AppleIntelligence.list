@@ -19,6 +19,7 @@
 
 # --- 苹果官方清单: Apple Intelligence、Siri 与搜索 (Private Cloud Compute) ---
 DOMAIN,guzzoni.apple.com,PROXY
+DOMAIN,guzzoni.smoot.apple.com,PROXY
 DOMAIN-SUFFIX,smoot.apple.com,PROXY
 DOMAIN,apple-relay.apple.com,PROXY
 DOMAIN,apple-relay.cloudflare.com,PROXY
